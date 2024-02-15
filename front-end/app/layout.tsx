@@ -17,7 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={classNames(questrial.className)}>
+      <body
+        className={classNames(
+          questrial.className,
+          "max-w-screen-2xl px-10 mx-auto",
+        )}
+      >
         <NavBar />
         {children}
       </body>

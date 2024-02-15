@@ -4,6 +4,7 @@ import { connect } from "mongoose";
 import morgan from "morgan";
 import { exit } from "node:process";
 import cors from "cors";
+import bodyParser from "body-parser";
 import blogRoutes from "./routes/blog-routes";
 import { CustomError } from "./util";
 
@@ -14,6 +15,8 @@ const MONGODB_URL = process.env.MONGODB_URL;
 const app = express();
 
 app.use(morgan("dev"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/blogs", blogRoutes);

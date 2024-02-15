@@ -1,9 +1,4 @@
 import Title from "@/components/title";
-import classNames from "classnames";
-
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"], weight: ["500"] });
 
 export default function About() {
   return (

@@ -3,6 +3,8 @@ import express from "express";
 import { connect } from "mongoose";
 import morgan from "morgan";
 import { exit } from "node:process";
+import cors from "cors";
+import blogRoutes from "./routes/blog-routes";
 
 config();
 
@@ -11,6 +13,9 @@ const MONGODB_URL = process.env.MONGODB_URL;
 const app = express();
 
 app.use(morgan("dev"));
+app.use(cors());
+
+app.use("/blogs", blogRoutes);
 
 if (MONGODB_URL) {
   connect(MONGODB_URL)

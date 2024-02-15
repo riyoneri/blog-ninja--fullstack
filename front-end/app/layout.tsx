@@ -21,7 +21,7 @@ export default function RootLayout({
       <body
         className={classNames(
           questrial.className,
-          "max-w-screen-2xl min-h-screen px-10 mx-auto flex flex-col py-3",
+          "max-w-screen-2xl min-h-screen px-5 sm:px-10 mx-auto flex flex-col py-3",
         )}
       >
         <NavBar />

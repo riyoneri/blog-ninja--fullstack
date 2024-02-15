@@ -15,7 +15,7 @@
     "tabWidth": 2,
     "semi": true
   },
-  "author": "",
+  "author": "Lionel Kaneza",
   "license": "ISC",
   "devDependencies": {
     "prettier": "^3.2.5",

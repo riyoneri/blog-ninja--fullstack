@@ -55,3 +55,31 @@ export async function getAllBlogs(
     next(error);
   }
 }
+
+export async function getSingleBlog(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) {
+  try {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      const error = new CustomError("Invalid blog id", 400);
+
+      return next(error);
+    }
+
+    const blog = await Blog.findById(request.params.blogId);
+
+    if (!blog) {
+      const error = new CustomError("Blog not found", 404);
+
+      return next(error);
+    }
+
+    response.status(200).json(blog);
+  } catch {
+    const error = new CustomError("Internal server error", 500);
+    next(error);
+  }
+}

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { isMatch } from "lodash";
 import { CustomError, serializeValidation } from "../util";
 import Blog from "../models/blog-model";
 
@@ -78,6 +79,57 @@ export async function getSingleBlog(
     }
 
     response.status(200).json(blog);
+  } catch {
+    const error = new CustomError("Internal server error", 500);
+    next(error);
+  }
+}
+
+export async function updateBlog(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) {
+  try {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      const error = new CustomError(
+        "Validation failed",
+        400,
+        serializeValidation(errors),
+      );
+
+      return next(error);
+    }
+
+    const blog = await Blog.findById(request.params.blogId);
+
+    if (!blog) {
+      const error = new CustomError("Blog not found", 404);
+
+      return next(error);
+    }
+
+    if (isMatch(blog.toObject(), request.body))
+      return response.status(200).json(blog);
+
+    blog.title = request.body.title;
+    blog.snippet = request.body.snippet;
+    blog.body = request.body.body;
+
+    const savedBlog = await blog.save();
+
+    const transformedBlog = savedBlog.toObject({
+      transform(document_, returnValue) {
+        delete returnValue._id;
+        return {
+          _id: document_._id,
+          ...returnValue,
+        };
+      },
+    });
+
+    response.status(200).json(transformedBlog);
   } catch {
     const error = new CustomError("Internal server error", 500);
     next(error);

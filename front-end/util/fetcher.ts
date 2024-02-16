@@ -1,3 +1,4 @@
+import { NewBlogDto } from "./api";
 import { apiUrl } from "./api-url";
 
 export async function allBlogs() {
@@ -16,6 +17,27 @@ export async function allBlogs() {
 
 export async function singleBlog(id: string) {
   const response = await fetch(`${apiUrl}/blogs/${id}`);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw "404";
+    }
+    throw data.message;
+  }
+
+  return data;
+}
+
+export async function createBlog(body: NewBlogDto) {
+  const response = await fetch(`${apiUrl}/blogs`, {
+    body: JSON.stringify(body),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   const data = await response.json();
 

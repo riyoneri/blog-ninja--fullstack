@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { isMatch } from "lodash";
-import { CustomError, serializeValidation } from "../util";
+import { isValidObjectId } from "mongoose";
 import Blog from "../models/blog-model";
+import { CustomError, serializeValidation } from "../util";
 
 export async function createBlog(
   request: Request,
@@ -70,6 +71,12 @@ export async function getSingleBlog(
       return next(error);
     }
 
+    if (!isValidObjectId(request.params.blogId)) {
+      const error = new CustomError("Blog not found", 404);
+
+      return next(error);
+    }
+
     const blog = await Blog.findById(request.params.blogId);
 
     if (!blog) {
@@ -98,6 +105,12 @@ export async function updateBlog(
         400,
         serializeValidation(errors),
       );
+
+      return next(error);
+    }
+
+    if (!isValidObjectId(request.params.blogId)) {
+      const error = new CustomError("Blog not found", 404);
 
       return next(error);
     }
@@ -145,6 +158,12 @@ export async function deleteBlog(
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
       const error = new CustomError("Invalid blog id", 400);
+
+      return next(error);
+    }
+
+    if (!isValidObjectId(request.params.blogId)) {
+      const error = new CustomError("Blog not found", 404);
 
       return next(error);
     }

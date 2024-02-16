@@ -27,6 +27,28 @@ router
     blogController.createBlog,
   )
   .get("/", blogController.getAllBlogs)
-  .get("/:blogId", param("blogId").isMongoId(), blogController.getSingleBlog);
+  .get("/:blogId", param("blogId").isMongoId(), blogController.getSingleBlog)
+  .patch(
+    "/:blogId",
+    [
+      param("blogId").isMongoId(),
+      body("title", "Blog title is required")
+        .notEmpty({
+          ignore_whitespace: true,
+        })
+        .isString(),
+      body("snippet", "Blog snippet is required")
+        .notEmpty({
+          ignore_whitespace: true,
+        })
+        .isString(),
+      body("body", "Blog body is required")
+        .notEmpty({
+          ignore_whitespace: true,
+        })
+        .isString(),
+    ],
+    blogController.updateBlog,
+  );
 
 export default router;

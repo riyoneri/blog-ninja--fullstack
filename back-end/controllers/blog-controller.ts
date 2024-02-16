@@ -34,7 +34,7 @@ export async function createBlog(
       },
     });
 
-    response.status(200).json(blog);
+    response.status(201).json(blog);
   } catch {
     const error = new CustomError("Internal server error", 500);
     next(error);

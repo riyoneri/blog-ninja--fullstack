@@ -1,33 +1,26 @@
+"use client";
+
 import BlogList from "@/components/blogs/blog-list";
+import ResponseCard from "@/components/response-card";
 import Title from "@/components/title";
-
-export interface Blog {
-  _id: string;
-  title: string;
-  snippet: string;
-  body: string;
-}
-
-const Blogs: Blog[] = [
-  {
-    _id: "1",
-    title: "Blog 1",
-    snippet: "Blog 1 snippet",
-    body: "Blog 1 body",
-  },
-  {
-    _id: "2",
-    title: "Blog 2",
-    snippet: "Blog 2 snippet",
-    body: "Blog 2 body",
-  },
-];
+import { BlogDto } from "@/util/api";
+import { allBlogs } from "@/util/fetcher";
+import { useQuery } from "@tanstack/react-query";
+import Head from "next/head";
 
 export default function Home() {
+  const { data, error, isLoading } = useQuery<BlogDto[], string>({
+    queryKey: ["blogs"],
+    queryFn: allBlogs,
+  });
   return (
     <>
+      <Head>Lion</Head>
       <Title title="All Blogs" />
-      <BlogList blogs={Blogs} />
+      {isLoading && <ResponseCard loading={isLoading} />}
+      {error && <ResponseCard error={error} />}
+
+      {data && <BlogList blogs={data} />}
     </>
   );
 }

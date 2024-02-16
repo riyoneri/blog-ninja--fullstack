@@ -20,7 +20,7 @@ export default function BlogListItem({
   return (
     <Link
       href={`/blogs/${_id}`}
-      className="border-l-4 pl-5 border-l-red-700 group space-y-2"
+      className="border-l-4 pl-5 border-l-red-700 group space-y-2 hover:bg-red-700/10 py-1"
     >
       <h3
         className={classNames(

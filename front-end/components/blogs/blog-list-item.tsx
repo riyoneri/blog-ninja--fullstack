@@ -18,8 +18,18 @@ export default function BlogListItem({
   snippet,
 }: BlogListItemProperties) {
   return (
-    <Link href={`/blogs/${_id}`}>
-      <h3 className={classNames(inter.className, "font-semibold")}>{title}</h3>
+    <Link
+      href={`/blogs/${_id}`}
+      className="border-l-4 pl-5 border-l-red-700 group space-y-2"
+    >
+      <h3
+        className={classNames(
+          inter.className,
+          "font-semibold group-hover:text-red-700",
+        )}
+      >
+        {title}
+      </h3>
       <p className="text-sm">{snippet}</p>
     </Link>
   );

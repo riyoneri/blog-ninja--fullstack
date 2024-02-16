@@ -15,5 +15,5 @@ export default function BlogList({ blogs }: BlogListProperties) {
     ));
   }
 
-  return <div className="flex flex-col gap-3 items-start">{displayBlogs}</div>;
+  return <div className="flex flex-col gap-7 items-start">{displayBlogs}</div>;
 }

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import * as blogController from "../controllers/blog-controller";
 
 const router = Router();
@@ -26,6 +26,7 @@ router
     ],
     blogController.createBlog,
   )
-  .get("/", blogController.getAllBlogs);
+  .get("/", blogController.getAllBlogs)
+  .get("/:blogId", param("blogId").isMongoId(), blogController.getSingleBlog);
 
 export default router;

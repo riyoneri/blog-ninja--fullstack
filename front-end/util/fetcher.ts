@@ -1,19 +1,30 @@
 import { apiUrl } from "./api-url";
 
 export async function allBlogs() {
-  try {
-    const response = await fetch(`${apiUrl}/blogs`);
+  const response = await fetch(`${apiUrl}/blogs`);
 
-    if (response.status === 404) return "Url not found";
+  if (response.status === 404) return "Url not found";
 
-    const data = await response.json();
+  const data = await response.json();
 
-    if (!response.ok) {
-      throw data.message;
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw data.message;
   }
+
+  return data;
+}
+
+export async function singleBlog(id: string) {
+  const response = await fetch(`${apiUrl}/blogs/${id}`);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw "404";
+    }
+    throw data.message;
+  }
+
+  return data;
 }

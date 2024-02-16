@@ -3,6 +3,7 @@
 import { notFound, useParams } from "next/navigation";
 
 import { Blog } from "../page";
+import Title from "@/components/title";
 
 const Blogs: Blog[] = [
   {
@@ -28,7 +29,9 @@ export default function BlogDetails() {
 
   return (
     <>
-      <div> This is blog {blog?._id} details</div>
+      <Title title={blog.title} />
+      <div className="py-5">{blog.snippet}</div>
+      <div>{blog.body}</div>
     </>
   );
 }

@@ -11,4 +11,10 @@ interface NewBlogDto {
   body: string;
 }
 
-export type { BlogDto, NewBlogDto };
+interface UpdateBlogDto {
+  title: string;
+  snippet: string;
+  body: string;
+}
+
+export type { BlogDto, NewBlogDto, UpdateBlogDto };

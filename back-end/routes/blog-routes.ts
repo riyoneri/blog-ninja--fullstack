@@ -49,6 +49,7 @@ router
         .isString(),
     ],
     blogController.updateBlog,
-  );
+  )
+  .delete("/:blogId", param("blogId").isMongoId(), blogController.deleteBlog);
 
 export default router;

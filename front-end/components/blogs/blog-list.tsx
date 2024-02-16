@@ -1,9 +1,9 @@
-import { Blog } from "@/app/blogs/page";
-import BlogListItem from "./blog-list-item";
+import { BlogDto } from "@/util/api";
 import { ReactElement } from "react";
+import BlogListItem from "./blog-list-item";
 
 interface BlogListProperties {
-  blogs: Blog[];
+  blogs: BlogDto[];
 }
 
 export default function BlogList({ blogs }: BlogListProperties) {
@@ -15,5 +15,9 @@ export default function BlogList({ blogs }: BlogListProperties) {
     ));
   }
 
-  return <div className="flex flex-col gap-7 items-start">{displayBlogs}</div>;
+  return (
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+      {displayBlogs}
+    </div>
+  );
 }

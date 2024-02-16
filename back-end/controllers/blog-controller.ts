@@ -40,3 +40,18 @@ export async function createBlog(
     next(error);
   }
 }
+
+export async function getAllBlogs(
+  _: Request,
+  response: Response,
+  next: NextFunction,
+) {
+  try {
+    const blogs = await Blog.find().sort({ _id: -1 });
+
+    response.status(200).json(blogs);
+  } catch {
+    const error = new CustomError("Internal server error", 500);
+    next(error);
+  }
+}

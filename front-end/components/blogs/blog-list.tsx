@@ -1,4 +1,4 @@
-import { Blog } from "@/app/page";
+import { Blog } from "@/app/blogs/page";
 import BlogListItem from "./blog-list-item";
 import { ReactElement } from "react";
 

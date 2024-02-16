@@ -29,7 +29,10 @@ export default function BlogDetails() {
 
   return (
     <>
-      <Title title={blog.title} />
+      <div className="flex justify-between items-start cursor-pointer p-1">
+        <Title title={blog.title} />
+        <span className="rounded-full hover:shadow-md">delete</span>
+      </div>
       <div className="py-5">{blog.snippet}</div>
       <div>{blog.body}</div>
     </>

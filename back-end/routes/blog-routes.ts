@@ -27,11 +27,15 @@ router
     blogController.createBlog,
   )
   .get("/", blogController.getAllBlogs)
-  .get("/:blogId", param("blogId").isMongoId(), blogController.getSingleBlog)
+  .get(
+    "/:blogId",
+    param("blogId").notEmpty({ ignore_whitespace: true }),
+    blogController.getSingleBlog,
+  )
   .patch(
     "/:blogId",
     [
-      param("blogId").isMongoId(),
+      param("blogId").notEmpty({ ignore_whitespace: true }),
       body("title", "Blog title is required")
         .notEmpty({
           ignore_whitespace: true,
@@ -50,6 +54,10 @@ router
     ],
     blogController.updateBlog,
   )
-  .delete("/:blogId", param("blogId").isMongoId(), blogController.deleteBlog);
+  .delete(
+    "/:blogId",
+    param("blogId").notEmpty({ ignore_whitespace: true }),
+    blogController.deleteBlog,
+  );
 
 export default router;

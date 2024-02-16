@@ -1,40 +1,37 @@
 "use client";
 
+import ResponseCard from "@/components/response-card";
+import Title from "@/components/title";
+import { BlogDto } from "@/util/api";
+import { singleBlog } from "@/util/fetcher";
+import { useQuery } from "@tanstack/react-query";
 import { notFound, useParams } from "next/navigation";
 
-import { Blog } from "../page";
-import Title from "@/components/title";
-
-const Blogs: Blog[] = [
-  {
-    _id: "1",
-    title: "Blog 1",
-    snippet: "Blog 1 snippet",
-    body: "Blog 1 body",
-  },
-  {
-    _id: "2",
-    title: "Blog 2",
-    snippet: "Blog 2 snippet",
-    body: "Blog 2 body",
-  },
-];
-
 export default function BlogDetails() {
-  const parameters = useParams();
+  const { id } = useParams<{ id: string }>();
 
-  const blog = Blogs.find((blog) => blog._id === parameters.id);
+  const { data, error, isLoading } = useQuery<BlogDto, string>({
+    queryKey: ["blog", id],
+    queryFn: () => singleBlog(id),
+  });
 
-  if (!blog) return notFound();
+  if (error && error.includes("404")) return notFound();
 
   return (
     <>
-      <div className="flex justify-between items-start cursor-pointer p-1">
-        <Title title={blog.title} />
-        <span className="rounded-full hover:shadow-md">delete</span>
-      </div>
-      <div className="py-5">{blog.snippet}</div>
-      <div>{blog.body}</div>
+      {isLoading && <ResponseCard loading={isLoading} />}
+      {error && <ResponseCard error={error} />}
+
+      {data && (
+        <>
+          <div className="flex justify-between items-start cursor-pointer p-1">
+            <Title title={data.title} />
+            <span className="rounded-full hover:shadow-md">delete</span>
+          </div>
+          <div className="py-5">{data.snippet}</div>
+          <div>{data.body}</div>
+        </>
+      )}
     </>
   );
 }

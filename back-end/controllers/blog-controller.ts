@@ -135,3 +135,33 @@ export async function updateBlog(
     next(error);
   }
 }
+
+export async function deleteBlog(
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) {
+  try {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      const error = new CustomError("Invalid blog id", 400);
+
+      return next(error);
+    }
+
+    const blog = await Blog.findById(request.params.blogId);
+
+    if (!blog) {
+      const error = new CustomError("Blog not found", 404);
+
+      return next(error);
+    }
+
+    await Blog.findByIdAndDelete(request.params.blogId);
+
+    response.status(204).json();
+  } catch {
+    const error = new CustomError("Internal server error", 500);
+    next(error);
+  }
+}

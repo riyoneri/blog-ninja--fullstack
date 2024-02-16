@@ -12,9 +12,10 @@ export default function NavBar() {
       </Link>
       <div>
         <nav className="flex gap-5">
-          <Link href="/">Blogs</Link>
-          <Link href="/about">About</Link>
+          <Link href="/">Home</Link>
+          <Link href="/blogs">Blogs</Link>
           <Link href="/new-blog">New Blog</Link>
+          <Link href="/about">About</Link>
         </nav>
       </div>
     </div>

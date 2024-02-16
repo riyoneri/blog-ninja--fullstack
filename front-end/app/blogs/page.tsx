@@ -4,19 +4,22 @@ import Title from "@/components/title";
 export interface Blog {
   _id: string;
   title: string;
-  description: string;
+  snippet: string;
+  body: string;
 }
 
 const Blogs: Blog[] = [
   {
     _id: "1",
     title: "Blog 1",
-    description: "Blog 1 description",
+    snippet: "Blog 1 snippet",
+    body: "Blog 1 body",
   },
   {
     _id: "2",
     title: "Blog 2",
-    description: "Blog 2 description",
+    snippet: "Blog 2 snippet",
+    body: "Blog 2 body",
   },
 ];
 

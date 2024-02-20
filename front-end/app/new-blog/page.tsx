@@ -1,14 +1,43 @@
 "use client";
 
+import Loader from "@/components/loader";
 import Title from "@/components/title";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { NewBlogDto } from "@/util/api";
+import { createBlog } from "@/util/fetcher";
+import { useMutation } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 export default function NewBlog() {
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<NewBlogDto>({
     title: "",
     snippet: "",
     body: "",
   });
+
+  const [error, setError] = useState<string[]>([]);
+  const {
+    data: createBlogData,
+    error: createBlogError,
+    isPending,
+
+    mutate,
+  } = useMutation({
+    mutationFn: (body: NewBlogDto) => createBlog(body),
+  });
+
+  useEffect(() => {
+    if (createBlogError) {
+      setError([]);
+      for (let key in createBlogError) {
+        setError((previousError) => [...previousError, createBlogError[key]]);
+      }
+    }
+
+    if (createBlogData) {
+      redirect("/blogs");
+    }
+  }, [createBlogData, createBlogError]);
 
   function handleInputChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -22,19 +51,38 @@ export default function NewBlog() {
 
   function handleFormSubmit(event: FormEvent) {
     event.preventDefault();
+    setError([]);
+    let errorOccured = false;
 
-    console.log(formValues);
+    for (let key in formValues) {
+      if (!formValues[key]) {
+        errorOccured = true;
+        setError((previousError) => [
+          ...previousError,
+          `${key[0].toUpperCase() + key.slice(1)} must not be empty.`,
+        ]);
+      }
+    }
+
+    if (!errorOccured) mutate(formValues);
   }
 
   return (
     <>
       <Title title="Add Blog" />
-      <div className="mx-auto max-w-xl w-full md:w-1/2 flex flex-col text-sm gap-5 bg-red-800/20 p-3 rounded-md mb-10">
-        <div className="flex items-center gap-3">
-          <span className="w-3 h-0.5 bg-red-400"></span>
-          <span>This is validation error</span>
-        </div>
-      </div>
+      {error.length > 0
+        ? error.map((errorValue, index) => (
+            <div
+              key={index}
+              className="mx-auto max-w-xl w-full md:w-1/2 flex flex-col text-sm gap-5 bg-red-800/20 p-3 rounded-md mb-5"
+            >
+              <div className="flex items-center gap-3">
+                <span className="w-3 h-0.5 bg-red-400"></span>
+                <span>{errorValue}</span>
+              </div>
+            </div>
+          ))
+        : ""}
       <form
         className="mx-auto max-w-xl md:w-1/2 w-full flex flex-col gap-5 *:flex *:flex-col"
         onSubmit={handleFormSubmit}
@@ -69,9 +117,13 @@ export default function NewBlog() {
           ></textarea>
         </label>
         <label>
-          <button className="bg-red-800 py-2 text-white sm:self-start px-10 rounded-sm">
-            Submit
-          </button>
+          {isPending ? (
+            <Loader />
+          ) : (
+            <button className="bg-red-800 py-2 text-white sm:self-start px-10 rounded-sm">
+              Submit
+            </button>
+          )}
         </label>
       </form>
     </>

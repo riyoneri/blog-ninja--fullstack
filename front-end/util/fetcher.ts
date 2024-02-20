@@ -1,4 +1,4 @@
-import { NewBlogDto } from "./api";
+import { BlogDto, NewBlogDto } from "./api";
 import { apiUrl } from "./api-url";
 
 export async function allBlogs() {
@@ -30,7 +30,7 @@ export async function singleBlog(id: string) {
   return data;
 }
 
-export async function createBlog(body: NewBlogDto) {
+export async function createBlog(body: { [key: string]: string }) {
   const response = await fetch(`${apiUrl}/blogs`, {
     body: JSON.stringify(body),
     method: "POST",

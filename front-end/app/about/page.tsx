@@ -3,6 +3,7 @@ import Title from "@/components/title";
 export default function About() {
   return (
     <>
+      <title>About us</title>
       <Title title="About Us" />
       <div>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae

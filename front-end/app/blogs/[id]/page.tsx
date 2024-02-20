@@ -8,6 +8,7 @@ import { singleBlog, deleteBlog } from "@/util/fetcher";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { notFound, redirect, useParams } from "next/navigation";
 import { useEffect } from "react";
+import { FaTrash } from "react-icons/fa6";
 
 export default function BlogDetails() {
   const { id } = useParams<{ id: string }>();
@@ -45,10 +46,10 @@ export default function BlogDetails() {
               <Loader />
             ) : (
               <span
-                className="rounded-full hover:shadow-md cursor-pointer"
+                className="rounded-full cursor-pointer"
                 onClick={() => mutate(id)}
               >
-                delete
+                <FaTrash className="hover:shadow-md size-4 hover:text-red-600 transition" />
               </span>
             )}
           </div>

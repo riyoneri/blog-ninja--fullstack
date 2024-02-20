@@ -2,14 +2,13 @@
 
 import Loader from "@/components/loader";
 import Title from "@/components/title";
-import { NewBlogDto } from "@/util/api";
 import { createBlog } from "@/util/fetcher";
 import { useMutation } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 export default function NewBlog() {
-  const [formValues, setFormValues] = useState<NewBlogDto>({
+  const [formValues, setFormValues] = useState<{ [key: string]: string }>({
     title: "",
     snippet: "",
     body: "",
@@ -22,12 +21,12 @@ export default function NewBlog() {
     isPending,
 
     mutate,
-  } = useMutation({
-    mutationFn: (body: NewBlogDto) => createBlog(body),
+  } = useMutation<Promise<any>, any, { [key: string]: string }>({
+    mutationFn: (body: { [key: string]: string }) => createBlog(body),
   });
 
   useEffect(() => {
-    if (createBlogError) {
+    if (createBlogError && typeof createBlogError === "object") {
       setError([]);
       for (let key in createBlogError) {
         setError((previousError) => [...previousError, createBlogError[key]]);

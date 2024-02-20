@@ -68,6 +68,7 @@ export default function NewBlog() {
 
   return (
     <>
+      <title>Create new blog</title>
       <Title title="Add Blog" />
       {error.length > 0
         ? error.map((errorValue, index) => (

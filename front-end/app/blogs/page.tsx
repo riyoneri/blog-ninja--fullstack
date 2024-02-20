@@ -15,6 +15,7 @@ export default function Home() {
   });
   return (
     <>
+      <title>All blogs</title>
       <Head>Lion</Head>
       <Title title="All Blogs" />
       {isLoading && <ResponseCard loading={isLoading} />}

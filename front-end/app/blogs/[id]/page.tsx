@@ -35,6 +35,7 @@ export default function BlogDetails() {
 
   return (
     <>
+      <title>{data?.title + " Details"}</title>
       {isLoading && <ResponseCard loading={isLoading} />}
       {error && <ResponseCard error={error} />}
 

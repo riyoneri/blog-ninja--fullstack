@@ -50,3 +50,15 @@ export async function createBlog(body: { [key: string]: string }) {
 
   return data;
 }
+
+export async function deleteBlog(blogId: string) {
+  const response = await fetch(`${apiUrl}/blogs/${blogId}`, {
+    method: "DELETE",
+  });
+
+  if (response.ok) return `Blog with ID: ${blogId} is deleted`;
+
+  const data = await response.json();
+
+  throw data.message;
+}
